@@ -1,101 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Calculator</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #fafafa;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    h1 {
-      color: #212121;
-      font-weight: 500;
-    }
-    .calculator {
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      width: 320px;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 18px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-    button {
-      padding: 16px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      background-color: #eeeeee;
-      color: #212121;
-      transition: background-color 0.2s;
-    }
-    button:active {
-      background-color: #c8e6c9;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple offline calculator for students">
+    <title>Simple Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <!-- Optional: Link to a Google Font like Roboto for Android feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- iOS specific meta tags for better PWA experience -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Calculator">
+    <!-- You would link Apple touch icons here if needed -->
+
 </head>
 <body>
-  <h1>Student Calculator</h1>
-  <div class="calculator">
-    <input type="text" id="display" disabled>
-    <div class="buttons">
-      <button onclick="append('7')">7</button>
-      <button onclick="append('8')">8</button>
-      <button onclick="append('9')">9</button>
-      <button onclick="append('/')">/</button>
-      <button onclick="append('4')">4</button>
-      <button onclick="append('5')">5</button>
-      <button onclick="append('6')">6</button>
-      <button onclick="append('*')">×</button>
-      <button onclick="append('1')">1</button>
-      <button onclick="append('2')">2</button>
-      <button onclick="append('3')">3</button>
-      <button onclick="append('-')">−</button>
-      <button onclick="clearDisplay()">C</button>
-      <button onclick="append('0')">0</button>
-      <button onclick="append('.')">.</button>
-      <button onclick="append('+')">+</button>
-      <button onclick="calculate()" style="grid-column: span 4; background-color: #4caf50; color: white;">=</button>
+    <div class="calculator">
+        <input type="text" id="display" class="display" value="0" readonly disabled>
+
+        <div class="buttons">
+            <button class="button function" data-action="clear">C</button>
+            <button class="button function" data-action="sign">+/-</button>
+            <button class="button function" data-action="percent">%</button>
+            <button class="button operator" data-action="divide">/</button>
+
+            <button class="button number" data-number="7">7</button>
+            <button class="button number" data-number="8">8</button>
+            <button class="button number" data-number="9">9</button>
+            <button class="button operator" data-action="multiply">*</button>
+
+            <button class="button number" data-number="4">4</button>
+            <button class="button number" data-number="5">5</button>
+            <button class="button number" data-number="6">6</button>
+            <button class="button operator" data-action="subtract">-</button>
+
+            <button class="button number" data-number="1">1</button>
+            <button class="button number" data-number="2">2</button>
+            <button class="button number" data-number="3">3</button>
+            <button class="button operator" data-action="add">+</button>
+
+            <button class="button number zero" data-number="0">0</button>
+            <button class="button number" data-action="decimal">.</button>
+            <button class="button equals" data-action="calculate">=</button>
+        </div>
     </div>
-  </div>
-  <script>
-    function append(value) {
-      document.getElementById('display').value += value;
-    }
-    function clearDisplay() {
-      document.getElementById('display').value = '';
-    }
-    function calculate() {
-      try {
-        const result = eval(document.getElementById('display').value);
-        document.getElementById('display').value = result;
-      } catch {
-        document.getElementById('display').value = 'Error';
-      }
-    }
-  </script>
+
+    <script src="script.js"></script>
 </body>
 </html>

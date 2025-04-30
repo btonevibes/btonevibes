@@ -1,0 +1,148 @@
+:root {
+    --bg-color: #f0f0f0; /* Light gray background */
+    --calculator-bg: #ffffff; /* White calculator body */
+    --display-bg: #e0e0e0; /* Slightly darker display */
+    --display-text: #333333;
+    --button-bg: #f5f5f5; /* Light gray buttons */
+    --button-hover-bg: #e0e0e0;
+    --button-text: #333333;
+    --operator-bg: #4CAF50; /* Green for operators */
+    --operator-hover-bg: #45a049;
+    --operator-text: #ffffff;
+    --equals-bg: #2196F3; /* Blue for equals */
+    --equals-hover-bg: #1e88e5;
+    --equals-text: #ffffff;
+    --function-bg: #bdbdbd; /* Gray for functions */
+    --function-hover-bg: #aeaeae;
+    --function-text: #333333;
+
+    --button-border-radius: 8px; /* Rounded corners */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    font-family: 'Roboto', sans-serif; /* Android font */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+.calculator {
+    background-color: var(--calculator-bg);
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden; /* Keep contents within rounded corners */
+    width: 100%;
+    max-width: 360px; /* Typical phone width */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.display {
+    width: 100%;
+    background-color: var(--display-bg);
+    color: var(--display-text);
+    font-size: 2.8em; /* Larger display font */
+    text-align: right;
+    padding: 15px 10px;
+    border: none;
+    border-radius: var(--button-border-radius);
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    /* Prevent text selection */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    /* Prevent resizing */
+    resize: none;
+    overflow: hidden; /* Hide overflow */
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    gap: 10px; /* Spacing between buttons */
+}
+
+.button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: var(--button-border-radius);
+    padding: 18px;
+    font-size: 1.4em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    user-select: none; /* Prevent text selection */
+    font-weight: 500; /* Slightly bolder */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.button:hover {
+    background-color: var(--button-hover-bg);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.button:active {
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); /* Press effect */
+    transform: translateY(1px); /* Slight press down */
+}
+
+/* Span zero button across two columns */
+.button.zero {
+    grid-column: span 2;
+}
+
+/* Operator button styling */
+.button.operator {
+    background-color: var(--operator-bg);
+    color: var(--operator-text);
+}
+.button.operator:hover {
+    background-color: var(--operator-hover-bg);
+}
+
+/* Equals button styling */
+.button.equals {
+    background-color: var(--equals-bg);
+    color: var(--equals-text);
+    /* Optional: Make equals span rows if needed */
+    /* grid-row: span 2; */
+}
+.button.equals:hover {
+    background-color: var(--equals-hover-bg);
+}
+
+/* Function button styling (C, +/-, %) */
+.button.function {
+    background-color: var(--function-bg);
+    color: var(--function-text);
+}
+.button.function:hover {
+    background-color: var(--function-hover-bg);
+}
+
+/* Media query for smaller screens if needed, though max-width helps */
+@media (max-width: 400px) {
+    .calculator {
+        max-width: 95%;
+        padding: 15px;
+    }
+    .display {
+        font-size: 2.2em;
+        padding: 12px 8px;
+    }
+    .button {
+        padding: 15px;
+        font-size: 1.2em;
+    }
+    .buttons {
+        gap: 8px;
+    }
+}
