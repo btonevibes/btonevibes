@@ -1,33 +1,30 @@
-# Simple Static Calculator
+# Rawls' Original Position Game
 
-A simple, offline-first calculator web application designed for high-school students, built with static HTML, CSS, and JavaScript. It mimics basic Android calculator design principles.
+## Description
 
-## Features
+This game simulates John Rawls' "Original Position" thought experiment. You are a human embryo in space, about to land on Earth. Behind the 'Veil of Ignorance,' you don't know your future circumstances (e.g., wealth, health, social status).
 
-*   Basic Arithmetic Operations (+, -, *, /)
-*   Clear (C) and All Clear (AC) functionality (Combined in 'C')
-*   Decimal point support
-*   Responsive Design (Adapts to different screen sizes)
-*   Android-inspired User Interface
-*   Works completely offline (once loaded or added to home screen)
-*   No backend, database, or user accounts required. Runs entirely in the browser.
+You will be presented with pairs of fictional countries, each described by various societal statistics. For each pair, you must choose the country you would prefer to be born into, based *only* on the provided statistics. Your choices will help rank your preferences for different societal structures.
 
-## How to Use
+## How to Play
 
-1.  Clone or download this repository.
-2.  Open the `index.html` file in your web browser.
-3.  Use the on-screen buttons to perform calculations.
+1.  You will see two country cards, each displaying statistics like life expectancy, median income, poverty rate, etc.
+2.  Click the "Choose [Fictional Country Name]" button for the country you'd prefer.
+3.  Repeat this for a set number of comparisons (currently 15).
+4.  After all comparisons, your ranked preferences will be displayed.
+5.  You can choose to "Play Again" to restart the game.
 
-## Technology Stack
+## How to Access
 
-*   HTML5
-*   CSS3 (Flexbox/Grid for layout)
-*   Vanilla JavaScript (ES6+)
+This game is deployed as a web application using GitHub Pages. Once you've set it up in your repository, it will be accessible via a public URL like: `https://<your-username>.github.io/<your-repository-name>/`
 
-## Offline Usage
+## Technologies Used
 
-This app uses a `manifest.json` file, allowing browsers that support it (like Chrome on Android) to offer an "Add to Home Screen" option. Once added, it can be launched like a native app and will work offline. Even without adding to the home screen, once the page (`index.html`, `style.css`, `script.js`) is loaded, it will function offline as long as it remains in the browser cache or tab.
+*   HTML
+*   CSS (Tailwind CSS via CDN, inline styles)
+*   JavaScript (Vanilla JS for game logic)
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Data Sources
+*   Life Expectancy, Homicide Rate, Infant Mortality Rate: [World Health Organization (WHO) GHO data](https://www.who.int/data/gho).
+*   Median Disposable Income, Poverty Rate, Foreign-Born Population: OECD data.
+*(Note: The fictional country names and their associated real-world statistical profiles are for the purpose of this game.)*
