@@ -57,7 +57,7 @@
             <p class="mb-1"><strong>Data Sources:</strong></p>
             <ul class="list-disc list-inside">
                 <li>Life Expectancy, Homicide Rate, Infant Mortality Rate: <a href="https://www.who.int/data/gho" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">World Health Organization (WHO GHO data)</a>.</li>
-                <li>Median equivalised income (PPP USD), Poverty Rate, Foreign-Born Population: OECD data.</li>
+                <li>Median equivalised income (PPP USD), Poverty Rate, Foreign-Born Population: OECD data.</li>
             </ul>
         </footer>
     </div>
@@ -65,16 +65,16 @@
     <script>
         // --- DATA ---
         const baseCountryProfiles = [
-            { realName: "Australia",       stats: { lifeExpectancy: 83.2, povertyRate: 12.3, homicideRate: 0.9, infantMortality: 3.3,  foreignBorn: 29.3, medianIncome: 36835 }},
-            { realName: "Canada",          stats: { lifeExpectancy: 81.3, povertyRate: 11.2, homicideRate: 2.1, infantMortality: 4.4,  foreignBorn: 23.0, medianIncome: 39388 }},
-            { realName: "Denmark",         stats: { lifeExpectancy: 81.3, povertyRate: 5.6,  homicideRate: 1.0, infantMortality: 3.1,  foreignBorn: 14.0, medianIncome: 34061 }},
-            { realName: "France",          stats: { lifeExpectancy: 82.2, povertyRate: 8.4,  homicideRate: 1.3, infantMortality: 3.2,  foreignBorn: 10.3, medianIncome: 30622 }},
-            { realName: "Germany",         stats: { lifeExpectancy: 80.7, povertyRate: 9.8,  homicideRate: 0.8, infantMortality: 3.2,  foreignBorn: 17.3, medianIncome: 35537 }},
-            { realName: "Netherlands",     stats: { lifeExpectancy: 81.7, povertyRate: 7.5,  homicideRate: 0.7, infantMortality: 3.4,  foreignBorn: 14.0, medianIncome: 35891 }},
-            { realName: "Sweden",          stats: { lifeExpectancy: 83.1, povertyRate: 6.8,  homicideRate: 1.2, infantMortality: 1.9,  foreignBorn: 19.8, medianIncome: 33472 }},
-            { realName: "Switzerland",     stats: { lifeExpectancy: 83.8, povertyRate: 10.4, homicideRate: 0.6, infantMortality: 3.5,  foreignBorn: 30.0, medianIncome: 39698 }},
-            { realName: "United Kingdom",  stats: { lifeExpectancy: 80.8, povertyRate: 11.7, homicideRate: 1.1, infantMortality: 4.0,  foreignBorn: 16.8, medianIncome: 26884 }},
-            { realName: "United States",   stats: { lifeExpectancy: 76.9, povertyRate: 18.0, homicideRate: 5.8, infantMortality: 5.4,  foreignBorn: 14.0, medianIncome: 48625 }}
+            { realName: "Australia",       stats: { lifeExpectancy: 83.2, povertyRate: 12.3, homicideRate: 0.9, infantMortality: 3.3,  foreignBorn: 30.7, medianIncome: 36835 }}, // Updated
+            { realName: "Canada",          stats: { lifeExpectancy: 81.3, povertyRate: 11.2, homicideRate: 2.1, infantMortality: 4.4,  foreignBorn: 23.0, medianIncome: 39388 }}, // No change
+            { realName: "Denmark",         stats: { lifeExpectancy: 81.3, povertyRate: 5.6,  homicideRate: 1.0, infantMortality: 3.1,  foreignBorn: 14.1, medianIncome: 34061 }}, // Updated
+            { realName: "France",          stats: { lifeExpectancy: 82.2, povertyRate: 8.4,  homicideRate: 1.3, infantMortality: 3.2,  foreignBorn: 13.1, medianIncome: 30622 }}, // Updated
+            { realName: "Germany",         stats: { lifeExpectancy: 80.7, povertyRate: 9.8,  homicideRate: 0.8, infantMortality: 3.2,  foreignBorn: 19.8, medianIncome: 35537 }}, // Updated
+            { realName: "Netherlands",     stats: { lifeExpectancy: 81.7, povertyRate: 7.5,  homicideRate: 0.7, infantMortality: 3.4,  foreignBorn: 15.6, medianIncome: 35891 }}, // Updated
+            { realName: "Sweden",          stats: { lifeExpectancy: 83.1, povertyRate: 6.8,  homicideRate: 1.2, infantMortality: 1.9,  foreignBorn: 20.5, medianIncome: 33472 }}, // Updated
+            { realName: "Switzerland",     stats: { lifeExpectancy: 83.8, povertyRate: 10.4, homicideRate: 0.6, infantMortality: 3.5,  foreignBorn: 30.0, medianIncome: 39698 }}, // No change
+            { realName: "United Kingdom",  stats: { lifeExpectancy: 80.8, povertyRate: 11.7, homicideRate: 1.1, infantMortality: 4.0,  foreignBorn: 17.0, medianIncome: 26884 }}, // Updated
+            { realName: "United States",   stats: { lifeExpectancy: 76.9, povertyRate: 18.0, homicideRate: 5.8, infantMortality: 5.4,  foreignBorn: 15.6, medianIncome: 48625 }}  // Updated
         ];
         const fictionalNamePool = [
             "Aethelgard", "Borelia", "Caspia", "Drakon", "Elara", "Faelan", "Gwyn", "Hyperia", "Iridia", "Jorin", 
@@ -142,7 +142,7 @@
         // --- COUNTRY CARD RENDERING (Tournament Version) ---
         function createCountryCardHTML_Tournament(country, currentViablePool) {
             const leRating = getBarRating(country.stats.lifeExpectancy, 'lifeExpectancy', true, currentViablePool);
-            const incomeRating = getBarRating(country.stats.medianIncome, 'medianIncome', true, currentViablePool);
+            const incomeRating = getBarRating(country.stats.medianIncome, 'medianIncome', true, currentViablePool); // Assuming 'medianIncome' is the key in your stats object
             const povertyRating = getBarRating(country.stats.povertyRate, 'povertyRate', false, currentViablePool);
             const homicideRating = getBarRating(country.stats.homicideRate, 'homicideRate', false, currentViablePool);
             const imRating = getBarRating(country.stats.infantMortality, 'infantMortality', false, currentViablePool);
