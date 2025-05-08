@@ -98,12 +98,11 @@
         </div>
 
         <div id="resultsArea" class="hidden mt-10">
-            <h2 class="text-3xl font-bold mb-6 text-center text-gray-700">Your Country Preferences</h2> {/* Title changed */}
+            <h2 class="text-3xl font-bold mb-6 text-center text-gray-700">Your Country Preferences</h2>
             <ol id="rankedList" class="max-w-lg mx-auto space-y-2"></ol>
             
-            {/* New sections for analysis and comparison */}
-            <div id="analysisArea" class="max-w-2xl mx-auto"></div> {/* Increased max-width for better readability */}
-            <div id="comparisonSection" class="max-w-2xl mx-auto"></div> {/* Increased max-width */}
+            <div id="analysisArea" class="max-w-2xl mx-auto"></div>
+            <div id="comparisonSection" class="max-w-2xl mx-auto"></div>
 
             <button id="playAgainBtn" class="action-button block mx-auto mt-8">Play Again</button>
         </div>
@@ -119,7 +118,7 @@
 
     <script>
         // --- DATA ---
-        const baseCountryProfiles = [ // Renamed from initialRealCountryData for clarity
+        const baseCountryProfiles = [ 
             { realName: "Australia",       stats: { lifeExpectancy: 83.2, povertyRate: 12.3, homicideRate: 0.9, infantMortality: 3.3,  foreignBorn: 30.7, medianIncome: 36835 }},
             { realName: "Canada",          stats: { lifeExpectancy: 81.3, povertyRate: 11.2, homicideRate: 2.1, infantMortality: 4.4,  foreignBorn: 23.0, medianIncome: 39388 }},
             { realName: "Denmark",         stats: { lifeExpectancy: 81.3, povertyRate: 5.6,  homicideRate: 1.0, infantMortality: 3.1,  foreignBorn: 14.1, medianIncome: 34061 }},
@@ -134,12 +133,12 @@
         const fictionalNamePool = [
             "AETHELGARD", "BORELIA", "CASPIA", "DRAKON", "ELARA", "FAELAN", "GWYN", "HYPERIA", "IRIDIA", "JORIN", 
             "KRYLLOS", "LYRA", "MYRRIDON", "NEXARA", "ORIONIS", "PYRALIS", "QUORUM", "RHIVANA", "SOLARA", "TERRA NOVA"
-        ]; // Shortened for brevity, ensure enough if baseCountryProfiles grows
+        ]; 
 
         // --- GAME STATE ---
         let activeCountries = []; 
-        let userCountryScores = {}; // To track how many times user chose a country
-        let chosenCountryStatsHistory = []; // To store stats of countries user picked
+        let userCountryScores = {}; 
+        let chosenCountryStatsHistory = []; 
         let currentRound = 0;
 
         // --- DOM ELEMENTS ---
@@ -149,8 +148,8 @@
         const countryCardB_div = document.getElementById('countryCardB');
         const progressArea = document.getElementById('progressArea');
         const rankedList_ol = document.getElementById('rankedList');
-        const analysisArea_div = document.getElementById('analysisArea'); // New
-        const comparisonSection_div = document.getElementById('comparisonSection'); // New
+        const analysisArea_div = document.getElementById('analysisArea'); 
+        const comparisonSection_div = document.getElementById('comparisonSection'); 
         const playAgainBtn = document.getElementById('playAgainBtn');
 
         // --- UTILITY FUNCTIONS ---
@@ -185,7 +184,7 @@
             return { barCount, colorClass };
         }
 
-        function generateVerticalBarsHTML(barCount, colorClass) { // For LifeExp, Income etc.
+        function generateVerticalBarsHTML(barCount, colorClass) { 
             let barsHTML = '<div class="stat-bar-container w-[63px] justify-start">';
             for (let i = 0; i < barCount; i++) {
                 barsHTML += `<div class="stat-bar ${colorClass}" style="height: 18px;"></div>`;
@@ -193,11 +192,11 @@
             return barsHTML + '</div>';
         }
         
-        function generateHorizontalBarHTML(percentage) { // For Foreign-Born
+        function generateHorizontalBarHTML(percentage) { 
             const validPercentage = Math.max(0, Math.min(100, percentage));
             return `
                 <div class="stat-bar-container w-[63px] justify-start items-center"> 
-                    <div class="horizontal-bar-bg"> {/* Inner div takes full width of this container */}
+                    <div class="horizontal-bar-bg">
                         <div class="horizontal-bar-fill" style="width: ${validPercentage}%;"></div>
                     </div>
                 </div>
@@ -238,14 +237,14 @@
         // --- GAME LOGIC ---
         function startGame() {
             shuffleArray(fictionalNamePool);
-            userCountryScores = {}; // Reset scores
-            chosenCountryStatsHistory = []; // Reset history
+            userCountryScores = {}; 
+            chosenCountryStatsHistory = []; 
 
             activeCountries = baseCountryProfiles.map((profile, index) => {
-                userCountryScores[profile.realName] = 0; // Initialize score for each country
+                userCountryScores[profile.realName] = 0; 
                 return {
-                    ...profile, // spread base profile
-                    stats: { ...profile.stats }, // deep copy stats
+                    ...profile, 
+                    stats: { ...profile.stats }, 
                     fictionalName: fictionalNamePool[index % fictionalNamePool.length],
                     losses: 0,
                     opponentsFaced: {} 
@@ -254,8 +253,8 @@
             
             currentRound = 0;
             resultsArea.classList.add('hidden');
-            analysisArea_div.innerHTML = ""; // Clear previous analysis
-            comparisonSection_div.innerHTML = ""; // Clear previous comparison
+            analysisArea_div.innerHTML = ""; 
+            comparisonSection_div.innerHTML = ""; 
             gameArea.classList.remove('hidden');
             progressArea.textContent = '';
             nextComparison();
@@ -309,9 +308,8 @@
                 winner = countryB; loser = countryA;
             }
             
-            // Update user scores and history based on their choice (the winner of the round)
             userCountryScores[winner.realName]++;
-            chosenCountryStatsHistory.push({...winner.stats}); // Store a copy of the chosen country's stats
+            chosenCountryStatsHistory.push({...winner.stats}); 
 
             const loserInActive = activeCountries.find(c => c.realName === loser.realName);
             const winnerInActive = activeCountries.find(c => c.realName === winner.realName);
@@ -350,7 +348,7 @@
             };
             let analysisHTML = "<h3>Analysis of Your Choices</h3>";
             let findings = [];
-            const SIGNIFICANCE_THRESHOLD = 0.05; // 5% difference
+            const SIGNIFICANCE_THRESHOLD = 0.05; 
 
             if (((avgChosenStats.lifeExpectancy / overallAvgStats.lifeExpectancy) - 1) > SIGNIFICANCE_THRESHOLD) findings.push(`You tended towards a <strong class="positive-tendency">higher Life Expectancy</strong> (avg. chosen: ${avgChosenStats.lifeExpectancy.toFixed(1)} yrs vs. overall avg: ${overallAvgStats.lifeExpectancy.toFixed(1)} yrs).`);
             if (((avgChosenStats.medianIncome / overallAvgStats.medianIncome) - 1) > SIGNIFICANCE_THRESHOLD) findings.push(`You tended towards a <strong class="positive-tendency">higher Median Income</strong> (avg. chosen: $${avgChosenStats.medianIncome.toLocaleString()} vs. overall avg: $${overallAvgStats.medianIncome.toLocaleString()}).`);
@@ -408,29 +406,29 @@
             
             analysisArea_div.innerHTML = generateChoiceAnalysis();
 
-            const sortedCountriesForDisplay = activeCountries // Use activeCountries which has losses and fictional names
+            const sortedCountriesForDisplay = activeCountries 
                 .map(country => ({
                     ...country,
-                    score: userCountryScores[country.realName] || 0, // Get score from userCountryScores
+                    score: userCountryScores[country.realName] || 0, 
                     isEliminated: country.losses >= 2
                 }))
                 .sort((a, b) => {
-                    if (b.score !== a.score) return b.score - a.score; // Primary sort: user score
-                    return a.losses - b.losses; // Secondary sort: fewer losses is better
+                    if (b.score !== a.score) return b.score - a.score; 
+                    return a.losses - b.losses; 
                 });
 
             rankedList_ol.innerHTML = ''; 
             let topChoiceForComparison = null;
 
             if (sortedCountriesForDisplay.length > 0) {
-                topChoiceForComparison = sortedCountriesForDisplay[0].realName; // For US comparison
+                topChoiceForComparison = sortedCountriesForDisplay[0].realName; 
 
                 sortedCountriesForDisplay.forEach((country, index) => {
                     const listItem = document.createElement('li');
                     listItem.className = "flex items-center";
                     let rankBadgeContent = index + 1;
                     if (finalists && finalists.length === 1 && finalists[0].realName === country.realName && finalists[0].losses < 2) {
-                        rankBadgeContent = '🏆'; // Winner gets a trophy
+                        rankBadgeContent = '🏆'; 
                     }
                     let eliminatedText = country.isEliminated ? ' <span class="eliminated-text">(Eliminated)</span>' : '';
                     listItem.innerHTML = `
@@ -452,7 +450,7 @@
 
         // --- EVENT LISTENERS ---
         playAgainBtn.addEventListener('click', startGame);
-        startGame(); // Initialize game on load
+        startGame(); 
     </script>
 </body>
 </html>
