@@ -10,7 +10,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
         .country-card { background-color: white; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; width: 100%; }
         .country-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
-        .stat-bar-container { display: flex; align-items: flex-end; height: 22px; gap: 3px; }
+        .stat-bar-container { display: flex; align-items: flex-end; height: 22px; gap: 3px; } /* `gap: 3px` is for vertical bars */
         .stat-bar { width: 8px; border-radius: 2px; }
         .action-button { 
             background-color: #1e40af; /* Navy Blue - Tailwind blue-800 */
@@ -132,11 +132,13 @@
         }
 
         function generateBarsHTML(barCount, colorClass) {
-            let barsHTML = '<div class="stat-bar-container w-[75px] justify-start">';
+            // Width of 6 bars (8px each) + 5 gaps (3px each) = 48 + 15 = 63px
+            let barsHTML = '<div class="stat-bar-container w-[63px] justify-start">'; // Changed from w-[75px]
             for (let i = 0; i < barCount; i++) {
                 barsHTML += `<div class="stat-bar ${colorClass}" style="height: 18px;"></div>`;
             }
-            return barsHTML + '</div>';
+            barsHTML += '</div>';
+            return barsHTML;
         }
 
         // --- COUNTRY CARD RENDERING (Tournament Version) ---
@@ -158,9 +160,11 @@
                         <div class="flex justify-between items-center"><span>Poverty Rate: ${country.stats.povertyRate.toFixed(1)}%</span>${generateBarsHTML(povertyRating.barCount, povertyRating.colorClass)}</div>
                         <div class="flex justify-between items-center"><span>Homicide Rate: ${country.stats.homicideRate.toFixed(1)} /100k</span>${generateBarsHTML(homicideRating.barCount, homicideRating.colorClass)}</div>
                         <div class="flex justify-between items-center"><span>Infant Mortality: ${country.stats.infantMortality.toFixed(1)} /1k</span>${generateBarsHTML(imRating.barCount, imRating.colorClass)}</div>
+                        
                         <div class="flex justify-between items-center">
                             <span>Foreign-Born: ${country.stats.foreignBorn.toFixed(1)}%</span>
-                            <div class="stat-bar-container w-[75px] h-[18px] bg-gray-200 rounded overflow-hidden border border-gray-300">
+                            {/* Changed w-[75px] to w-[63px] and removed border classes */}
+                            <div class="stat-bar-container w-[63px] h-[18px] bg-gray-200 rounded overflow-hidden">
                                 <div class="bg-gray-500 h-full" style="width: ${foreignBornPercent}%;"></div>
                             </div>
                         </div>
