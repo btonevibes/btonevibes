@@ -56,7 +56,7 @@
         <footer class="mt-12 pt-8 border-t border-gray-300 text-sm text-gray-500">
             <p class="mb-1"><strong>Data Sources:</strong></p>
             <ul class="list-disc list-inside">
-                <li>Life Expectancy, Homicide Rate, Infant Mortality Rate: <a href="https://www.who.int/data/gho" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">World Health Organization (WHO) GHO data</a>.</li>
+                <li>Life Expectancy, Homicide Rate, Infant Mortality Rate: <a href="https://www.who.int/data/gho" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">World Health Organization (WHO GHO data)</a>.</li>
                 <li>Median equivalised income (PPP USD), Poverty Rate, Foreign-Born Population: OECD data.</li>
             </ul>
         </footer>
@@ -132,13 +132,11 @@
         }
 
         function generateBarsHTML(barCount, colorClass) {
-            // Width of 6 bars (8px each) + 5 gaps (3px each) = 48 + 15 = 63px
-            let barsHTML = '<div class="stat-bar-container w-[63px] justify-start">'; // Changed from w-[75px]
+            let barsHTML = '<div class="stat-bar-container w-[63px] justify-start">';
             for (let i = 0; i < barCount; i++) {
                 barsHTML += `<div class="stat-bar ${colorClass}" style="height: 18px;"></div>`;
             }
-            barsHTML += '</div>';
-            return barsHTML;
+            return barsHTML + '</div>';
         }
 
         // --- COUNTRY CARD RENDERING (Tournament Version) ---
@@ -163,7 +161,6 @@
                         
                         <div class="flex justify-between items-center">
                             <span>Foreign-Born: ${country.stats.foreignBorn.toFixed(1)}%</span>
-                            {/* Changed w-[75px] to w-[63px] and removed border classes */}
                             <div class="stat-bar-container w-[63px] h-[18px] bg-gray-200 rounded overflow-hidden">
                                 <div class="bg-gray-500 h-full" style="width: ${foreignBornPercent}%;"></div>
                             </div>
