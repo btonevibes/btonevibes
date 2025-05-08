@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rawls' Original Position - Tournament</title>
+    <title>Rawls' Original Position Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -11,37 +11,35 @@
         .country-card { background-color: white; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; width: 100%; }
         .country-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
         
-        .stat-bar-container { /* For vertical bars AND as a wrapper for horizontal bar */
+        .stat-bar-container { 
             display: flex; 
             align-items: flex-end; 
             height: 22px; 
-            gap: 3px; /* Only for vertical bars, ignored by single horizontal bar */
-            /* width is w-[63px] applied in JS */
+            gap: 3px; 
         }
-        .stat-bar { /* Individual vertical bar segment */
+        .stat-bar { 
             width: 8px; 
             border-radius: 2px; 
-            /* height: 18px; applied inline */
         }
-        .horizontal-bar-bg { /* Background for the horizontal foreign-born bar */
-            height: 18px; /* Match vertical bar segment height */
-            background-color: #E5E7EB; /* Tailwind gray-200 */
+        .horizontal-bar-bg { 
+            height: 18px; 
+            background-color: #E5E7EB; 
             border-radius: 0.25rem; 
             overflow: hidden; 
-            width: 100%; /* Fill its w-[63px] container */
+            width: 100%; 
         }
-        .horizontal-bar-fill { /* Filled portion of the horizontal bar */
+        .horizontal-bar-fill { 
             height: 100%;
-            background-color: #9CA3AF; /* Tailwind gray-400 */
+            background-color: #9CA3AF; 
             border-radius: 0.25rem; 
         }
 
         .action-button { 
-            background-color: #1E40AF; /* Tailwind blue-800 (Navy Blue) */
+            background-color: #1E40AF; 
             color: white; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; 
             cursor: pointer; transition: background-color 0.2s; border: none; outline: none; 
         }
-        .action-button:hover { background-color: #1E3A8A; /* Tailwind blue-900 (Darker Navy Blue) */ }
+        .action-button:hover { background-color: #1E3A8A; }
         
         #resultsArea ol li {
             background-color: #fff; padding: 0.75rem 1rem; border-radius: 0.375rem;
@@ -50,19 +48,19 @@
         }
         #resultsArea ol li .rank-badge {
             display: inline-block; width: 2rem; height: 2rem; line-height: 2rem; text-align: center;
-            border-radius: 50%; background-color: #1E40AF; /* Navy Blue */ color: white;
+            border-radius: 50%; background-color: #1E40AF; color: white;
             font-weight: bold; margin-right: 0.75rem;
         }
         .eliminated-text { color: #EF4444; font-style: italic; font-size: 0.875rem; }
 
-        #analysisArea, #comparisonSection { /* Shared styling for results blocks */
+        #analysisArea, #comparisonSection { 
             margin-top: 2rem; padding: 1.5rem; background-color: #fff;
             border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
         }
-        #analysisArea h3, #comparisonSection h3 { /* Shared heading style */
+        #analysisArea h3, #comparisonSection h3 { 
             font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: #374151; 
         }
-        #analysisArea p, #comparisonSection p { /* Shared paragraph style */
+        #analysisArea p, #comparisonSection p { 
             font-size: 0.95rem; line-height: 1.6; color: #4B5563; margin-bottom: 0.5rem; 
         }
          #analysisArea ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 0.75rem; }
@@ -70,40 +68,38 @@
         
         #comparisonTable { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         #comparisonTable th, #comparisonTable td {
-            text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid #e5e7eb; /* gray-200 */
+            text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid #e5e7eb;
         }
         #comparisonTable th { background-color: #f9fafb; font-weight: 500; color: #4b5563; }
         #comparisonTable td:nth-child(1) { font-weight: 500; color: #374151; }
         #comparisonTable td { font-size: 0.9rem; }
 
-        .positive-tendency { color: #16A34A; } /* Tailwind green-600 */
-        .negative-tendency { color: #DC2626; } /* Tailwind red-600 */
+        .positive-tendency { color: #16A34A; } 
+        .negative-tendency { color: #DC2626; } 
     </style>
 </head>
 <body class="text-gray-800 antialiased">
     <div class="container mx-auto px-4 py-8">
         <header class="text-center mb-6">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-700 mb-3">The Original Position Tournament</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-700 mb-3">The Original Position Game</h1>
             <p id="gameInstructions" class="text-md md:text-lg text-gray-600 max-w-3xl mx-auto">
-                You are a human embryo in space, about to land on Earth. Behind the 'Veil of Ignorance,' <strong class="font-semibold">you don't know your future circumstances</strong>. You will be presented with pairs of fictional countries. A country is eliminated after two losses.
+                You are a human embryo in space, about to land on Earth. Behind the 'Veil of Ignorance,' <strong class="font-semibold">you don't know your future circumstances</strong>. You will be given pairs of countries, chose your preferred one. A country is eliminated after two losses.
             </p>
         </header>
 
         <div id="gameArea">
             <div id="progressArea" class="text-center my-4 text-lg font-medium text-gray-600"></div>
             <div id="comparisonArea" class="flex flex-col md:flex-row justify-around items-stretch gap-6 md:gap-8 mb-8">
-                <div id="countryCardA" class="country-card p-6 flex flex-col justify-between"></div>
-                <div id="countryCardB" class="country-card p-6 flex flex-col justify-between"></div>
+                <div id="countryCardA" class="country-card p-4 flex flex-col justify-between"></div> {/* Padding changed to p-4 */}
+                <div id="countryCardB" class="country-card p-4 flex flex-col justify-between"></div> {/* Padding changed to p-4 */}
             </div>
         </div>
 
         <div id="resultsArea" class="hidden mt-10">
             <h2 class="text-3xl font-bold mb-6 text-center text-gray-700">Your Country Preferences</h2>
             <ol id="rankedList" class="max-w-lg mx-auto space-y-2"></ol>
-            
             <div id="analysisArea" class="max-w-2xl mx-auto"></div>
             <div id="comparisonSection" class="max-w-2xl mx-auto"></div>
-
             <button id="playAgainBtn" class="action-button block mx-auto mt-8">Play Again</button>
         </div>
 
@@ -203,7 +199,6 @@
             `;
         }
 
-
         // --- COUNTRY CARD RENDERING ---
         function createCountryCardHTML_Tournament(country, currentViablePool) {
             const leRating = getBarRating(country.stats.lifeExpectancy, 'lifeExpectancy', true, currentViablePool);
@@ -212,13 +207,14 @@
             const homicideRating = getBarRating(country.stats.homicideRate, 'homicideRate', false, currentViablePool);
             const imRating = getBarRating(country.stats.infantMortality, 'infantMortality', false, currentViablePool);
             
-            const lossesText = country.losses > 0 ? `<p class="text-xs text-gray-500 text-center mb-1">Losses: ${country.losses}</p>` : '<p class="text-xs text-gray-500 text-center mb-1 h-[18px]"></p>';
-
+            const lossesText = country.losses > 0 
+                ? `<p class="text-xs text-gray-500 text-center mb-0.5">Losses: ${country.losses}</p>` 
+                : '<p class="text-xs text-gray-500 text-center mb-0.5 h-[14px]"></p>';
 
             return `
                 <div> 
                     ${lossesText}
-                    <h2 class="text-2xl font-bold uppercase text-blue-800 mb-3 text-center">${country.fictionalName}</h2>
+                    <h2 class="text-2xl font-bold uppercase text-blue-800 mb-2 text-center">${country.fictionalName}</h2>
                     <div class="space-y-3 text-sm text-gray-700">
                         <div class="flex justify-between items-center"><span>Life Expectancy: ${country.stats.lifeExpectancy.toFixed(1)} yrs</span>${generateVerticalBarsHTML(leRating.barCount, leRating.colorClass)}</div>
                         <div class="flex justify-between items-center"><span>Median Income: $${country.stats.medianIncome.toLocaleString()}</span>${generateVerticalBarsHTML(incomeRating.barCount, incomeRating.colorClass)}</div>
@@ -265,7 +261,7 @@
             const viableCountries = activeCountries.filter(c => c.losses < 2);
 
             if (viableCountries.length < 2) {
-                showResults(viableCountries, viableCountries.length === 1 ? `${viableCountries[0].fictionalName} is the Winner!` : "Tournament Ended");
+                showResults(viableCountries, viableCountries.length === 1 && viableCountries[0].losses < 2 ? `${viableCountries[0].fictionalName} is the Winner!` : "Tournament Ended");
                 return;
             }
             progressArea.textContent = `Round ${currentRound}`;
@@ -421,7 +417,12 @@
             let topChoiceForComparison = null;
 
             if (sortedCountriesForDisplay.length > 0) {
-                topChoiceForComparison = sortedCountriesForDisplay[0].realName; 
+                const potentialTopChoices = sortedCountriesForDisplay.filter(c => !c.isEliminated);
+                if (potentialTopChoices.length > 0) {
+                    topChoiceForComparison = potentialTopChoices[0].realName;
+                } else { 
+                    topChoiceForComparison = sortedCountriesForDisplay[0].realName;
+                }
 
                 sortedCountriesForDisplay.forEach((country, index) => {
                     const listItem = document.createElement('li');
@@ -444,7 +445,7 @@
             if (topChoiceForComparison) {
                  comparisonSection_div.innerHTML = generateComparisonHTML(topChoiceForComparison);
             } else {
-                 comparisonSection_div.innerHTML = ""; 
+                 comparisonSection_div.innerHTML = "<p>No top choice to compare.</p>"; 
             }
         }
 
