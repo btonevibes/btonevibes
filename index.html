@@ -81,7 +81,6 @@
 <body class="text-gray-800 antialiased">
     <div class="container mx-auto px-4 py-8">
         <header class="text-center mb-6">
-            {/* Added id="gameTitle" */}
             <h1 id="gameTitle" class="text-4xl md:text-5xl font-bold text-gray-700 mb-3">The Original Position Game</h1>
             <p id="gameInstructions" class="text-md md:text-lg text-gray-600 max-w-3xl mx-auto">
                 You are a human embryo in space, about to land on Earth. Behind the 'Veil of Ignorance,' <strong class="font-semibold">you don't know your future circumstances</strong>. You will be given pairs of countries, chose your preferred one. A country is eliminated after two losses.
@@ -149,7 +148,7 @@
         const comparisonSection_div = document.getElementById('comparisonSection');
         const playAgainBtn = document.getElementById('playAgainBtn');
         const instructionsP = document.getElementById('gameInstructions');
-        const gameTitleH1 = document.getElementById('gameTitle'); // Added reference
+        const gameTitleH1 = document.getElementById('gameTitle');
 
         // --- UTILITY FUNCTIONS ---
         function shuffleArray(array) {
