@@ -27,13 +27,10 @@
             align-items: flex-end; /* Aligns bars to the bottom of the container */
             height: 22px; /* Consistent height for the container */
             gap: 3px; /* Space between individual bar segments */
-            /* Fixed width is now applied via Tailwind: w-[75px] */
-            /* justify-content is now applied via Tailwind: justify-start */
         }
         .stat-bar {
             width: 8px; /* Width of each bar segment */
             border-radius: 2px; /* Slightly rounded bars */
-            /* Height is set inline in JS: 18px */
         }
         .action-button {
             background-color: #3B82F6;
@@ -106,25 +103,34 @@
         </footer>
     </div>
 
-        <script>
+    <script>
         // --- DATA ---
-        const countriesData = [
-            { fictionalName: "AETHELGARD", realName: "Australia",       stats: { lifeExpectancy: 83.2, povertyRate: 12.3, homicideRate: 0.9, infantMortality: 3.3,  foreignBorn: 29.3, medianIncome: 36835 }},
-            { fictionalName: "BORELIA",    realName: "Canada",          stats: { lifeExpectancy: 81.3, povertyRate: 11.2, homicideRate: 2.1, infantMortality: 4.4,  foreignBorn: 23.0, medianIncome: 39388 }},
-            { fictionalName: "CASPIA",     realName: "Denmark",         stats: { lifeExpectancy: 81.3, povertyRate: 5.6,  homicideRate: 1.0, infantMortality: 3.1,  foreignBorn: 14.0, medianIncome: 34061 }},
-            { fictionalName: "DRAKON",     realName: "France",          stats: { lifeExpectancy: 82.2, povertyRate: 8.4,  homicideRate: 1.3, infantMortality: 3.2,  foreignBorn: 10.3, medianIncome: 30622 }},
-            { fictionalName: "ELARA",      realName: "Germany",         stats: { lifeExpectancy: 80.7, povertyRate: 9.8,  homicideRate: 0.8, infantMortality: 3.2,  foreignBorn: 17.3, medianIncome: 35537 }},
-            { fictionalName: "FAELAN",     realName: "Netherlands",     stats: { lifeExpectancy: 81.7, povertyRate: 7.5,  homicideRate: 0.7, infantMortality: 3.4,  foreignBorn: 14.0, medianIncome: 35891 }},
-            { fictionalName: "GWYN",       realName: "Sweden",          stats: { lifeExpectancy: 83.1, povertyRate: 6.8,  homicideRate: 1.2, infantMortality: 1.9,  foreignBorn: 19.8, medianIncome: 33472 }},
-            { fictionalName: "HYPERIA",    realName: "Switzerland",     stats: { lifeExpectancy: 83.8, povertyRate: 10.4, homicideRate: 0.6, infantMortality: 3.5,  foreignBorn: 30.0, medianIncome: 39698 }},
-            { fictionalName: "IRIDIA",     realName: "United Kingdom",  stats: { lifeExpectancy: 80.8, povertyRate: 11.7, homicideRate: 1.1, infantMortality: 4.0,  foreignBorn: 16.8, medianIncome: 26884 }},
-            { fictionalName: "JORIN",      realName: "United States",   stats: { lifeExpectancy: 76.9, povertyRate: 18.0, homicideRate: 5.8, infantMortality: 5.4,  foreignBorn: 14.0, medianIncome: 48625 }}
+        // Base profiles for countries; fictional names will be assigned dynamically.
+        const baseCountryProfiles = [
+            { realName: "Australia",       stats: { lifeExpectancy: 83.2, povertyRate: 12.3, homicideRate: 0.9, infantMortality: 3.3,  foreignBorn: 29.3, medianIncome: 36835 }},
+            { realName: "Canada",          stats: { lifeExpectancy: 81.3, povertyRate: 11.2, homicideRate: 2.1, infantMortality: 4.4,  foreignBorn: 23.0, medianIncome: 39388 }},
+            { realName: "Denmark",         stats: { lifeExpectancy: 81.3, povertyRate: 5.6,  homicideRate: 1.0, infantMortality: 3.1,  foreignBorn: 14.0, medianIncome: 34061 }},
+            { realName: "France",          stats: { lifeExpectancy: 82.2, povertyRate: 8.4,  homicideRate: 1.3, infantMortality: 3.2,  foreignBorn: 10.3, medianIncome: 30622 }},
+            { realName: "Germany",         stats: { lifeExpectancy: 80.7, povertyRate: 9.8,  homicideRate: 0.8, infantMortality: 3.2,  foreignBorn: 17.3, medianIncome: 35537 }},
+            { realName: "Netherlands",     stats: { lifeExpectancy: 81.7, povertyRate: 7.5,  homicideRate: 0.7, infantMortality: 3.4,  foreignBorn: 14.0, medianIncome: 35891 }},
+            { realName: "Sweden",          stats: { lifeExpectancy: 83.1, povertyRate: 6.8,  homicideRate: 1.2, infantMortality: 1.9,  foreignBorn: 19.8, medianIncome: 33472 }},
+            { realName: "Switzerland",     stats: { lifeExpectancy: 83.8, povertyRate: 10.4, homicideRate: 0.6, infantMortality: 3.5,  foreignBorn: 30.0, medianIncome: 39698 }},
+            { realName: "United Kingdom",  stats: { lifeExpectancy: 80.8, povertyRate: 11.7, homicideRate: 1.1, infantMortality: 4.0,  foreignBorn: 16.8, medianIncome: 26884 }},
+            { realName: "United States",   stats: { lifeExpectancy: 76.9, povertyRate: 18.0, homicideRate: 5.8, infantMortality: 5.4,  foreignBorn: 14.0, medianIncome: 48625 }}
+        ];
+
+        const fictionalNamePool = [
+            "Aethelgard", "Borelia", "Caspia", "Drakon", "Elara", "Faelan", "Gwyn", "Hyperia",
+            "Iridia", "Jorin", "Kaelara", "Lyndor", "Myrida", "Nyssen", "Orionus", "Pyral",
+            "Quintara", "Rheastel", "Solaris", "Tenebron", "Umbriel", "Valerium", "Wystia", "Xylos Prime",
+            "Ysoril", "Zephyria", "Argonia", "Brynnheim", "Corvallis", "Dalencia" // Pool of 30 names
         ];
 
         // --- GAME STATE ---
+        let currentGameCountries = []; // Holds country objects with dynamic fictional names for the current game
         let countryScores = {};
         let currentComparisonCount = 0; // Index for the comparisonSchedule
-        const TOTAL_COMPARISONS = 12;   // Ideal number of rounds (e.g., 12 or up to 15)
+        const TOTAL_COMPARISONS = 12;   // Ideal number of rounds
         let currentPairIndices = [];
         let comparisonSchedule = [];    // Stores the shuffled list of all possible unique pairs
 
@@ -137,9 +143,16 @@
         const rankedList_ol = document.getElementById('rankedList');
         const playAgainBtn = document.getElementById('playAgainBtn');
 
-        // --- UTILITY FUNCTIONS (BARS) ---
+        // --- UTILITY FUNCTIONS ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         function getBarRating(value, statKey, isPositiveGood) {
-            const allValues = countriesData
+            const allValues = currentGameCountries // Use currentGameCountries
                 .map(c => c.stats[statKey])
                 .filter(v => typeof v === 'number' && !isNaN(v));
             if (allValues.length === 0) {
@@ -181,24 +194,19 @@
             return barsHTML;
         }
 
-        // --- NEW UTILITY FUNCTION (SCHEDULE GENERATION) ---
         function generateComparisonSchedule(numCountries) {
             const schedule = [];
             for (let i = 0; i < numCountries; i++) {
                 for (let j = i + 1; j < numCountries; j++) {
-                    schedule.push([i, j]); // Store pairs of indices
+                    schedule.push([i, j]);
                 }
             }
-            // Shuffle the schedule (Fisher-Yates shuffle algorithm)
-            for (let i = schedule.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [schedule[i], schedule[j]] = [schedule[j], schedule[i]]; // Swap elements
-            }
+            shuffleArray(schedule); // Shuffle the pairs
             return schedule;
         }
 
         // --- COUNTRY CARD RENDERING ---
-        function createCountryCardHTML(country, countryIndex) {
+        function createCountryCardHTML(country, countryIndex) { // country object now comes from currentGameCountries
             const leRating = getBarRating(country.stats.lifeExpectancy, 'lifeExpectancy', true);
             const incomeRating = getBarRating(country.stats.medianIncome, 'medianIncome', true);
             const povertyRating = getBarRating(country.stats.povertyRate, 'povertyRate', false);
@@ -224,13 +232,22 @@
 
         // --- GAME LOGIC ---
         function startGame() {
-            countryScores = {};
-            countriesData.forEach(country => {
-                countryScores[country.realName] = 0;
+            shuffleArray(fictionalNamePool); // Shuffle names for each new game
+
+            currentGameCountries = baseCountryProfiles.map((profile, index) => {
+                return {
+                    ...profile, // Includes realName and stats
+                    fictionalName: (index < fictionalNamePool.length) ? fictionalNamePool[index] : `Domain ${index + 1}` // Assign dynamic fictional name
+                };
             });
 
-            comparisonSchedule = generateComparisonSchedule(countriesData.length);
-            currentComparisonCount = 0; // Reset to 0, used as index for comparisonSchedule
+            countryScores = {};
+            currentGameCountries.forEach(country => {
+                countryScores[country.realName] = 0; // Scores keyed by realName
+            });
+
+            comparisonSchedule = generateComparisonSchedule(currentGameCountries.length);
+            currentComparisonCount = 0;
 
             resultsArea.classList.add('hidden');
             gameArea.classList.remove('hidden');
@@ -239,7 +256,7 @@
         }
 
         function nextComparison() {
-            if (countriesData.length < 2) {
+            if (currentGameCountries.length < 2) { // Use currentGameCountries
                 progressArea.textContent = "Not enough countries to continue comparisons.";
                 showResults();
                 return;
@@ -258,8 +275,8 @@
             
             currentPairIndices = [index1, index2]; 
             
-            const countryA = countriesData[index1];
-            const countryB = countriesData[index2];
+            const countryA = currentGameCountries[index1]; // Use currentGameCountries
+            const countryB = currentGameCountries[index2]; // Use currentGameCountries
 
             countryCardA_div.innerHTML = createCountryCardHTML(countryA, index1);
             countryCardB_div.innerHTML = createCountryCardHTML(countryB, index2);
@@ -274,23 +291,21 @@
         
         function handleChoice(event) {
             const chosenCountryIndex = parseInt(event.target.dataset.countryIndex);
-            const chosenCountryRealName = countriesData[chosenCountryIndex].realName;
+            const chosenCountryRealName = currentGameCountries[chosenCountryIndex].realName; // Use currentGameCountries
             countryScores[chosenCountryRealName]++;
             
-            currentComparisonCount++; // Move to the next comparison in the schedule
+            currentComparisonCount++;
             nextComparison();
         }
 
         function showResults() {
             gameArea.classList.add('hidden');
             resultsArea.classList.remove('hidden');
-            if (currentComparisonCount >= TOTAL_COMPARISONS || (countriesData.length >=2 && currentComparisonCount >= comparisonSchedule.length) ) {
+            if (currentComparisonCount >= TOTAL_COMPARISONS || (currentGameCountries.length >=2 && currentComparisonCount >= comparisonSchedule.length) ) {
                  progressArea.textContent = "Comparisons Complete!";
-            } else if (countriesData.length < 2) {
+            } else if (currentGameCountries.length < 2) { // Use currentGameCountries
                  progressArea.textContent = "Not enough countries for further comparison. Showing current results.";
             }
-            // If game ended due to other reasons before TOTAL_COMPARISONS, the last progress text from nextComparison might still be visible
-            // or you can add more specific messages here if needed.
 
             const sortedCountries = Object.entries(countryScores)
                 .map(([realName, score]) => ({ realName, score }))
@@ -301,8 +316,8 @@
                 listItem.className = "flex items-center";
                 listItem.innerHTML = `
                     <span class="rank-badge">${index + 1}</span>
-                    <span>${country.realName} - Chosen: ${country.score} time(s)</span>
-                `;
+                    <span><strong>${country.realName}</strong> - Chosen: ${country.score} time(s)</span>
+                `; // Real name is now bold
                 rankedList_ol.appendChild(listItem);
             });
         }
