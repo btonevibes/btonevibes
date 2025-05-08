@@ -81,7 +81,8 @@
 <body class="text-gray-800 antialiased">
     <div class="container mx-auto px-4 py-8">
         <header class="text-center mb-6">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-700 mb-3">The Original Position Game</h1>
+            {/* Added id="gameTitle" */}
+            <h1 id="gameTitle" class="text-4xl md:text-5xl font-bold text-gray-700 mb-3">The Original Position Game</h1>
             <p id="gameInstructions" class="text-md md:text-lg text-gray-600 max-w-3xl mx-auto">
                 You are a human embryo in space, about to land on Earth. Behind the 'Veil of Ignorance,' <strong class="font-semibold">you don't know your future circumstances</strong>. You will be given pairs of countries, chose your preferred one. A country is eliminated after two losses.
             </p>
@@ -147,7 +148,8 @@
         const analysisArea_div = document.getElementById('analysisArea');
         const comparisonSection_div = document.getElementById('comparisonSection');
         const playAgainBtn = document.getElementById('playAgainBtn');
-        const instructionsP = document.getElementById('gameInstructions'); // Get reference to instructions paragraph
+        const instructionsP = document.getElementById('gameInstructions');
+        const gameTitleH1 = document.getElementById('gameTitle'); // Added reference
 
         // --- UTILITY FUNCTIONS ---
         function shuffleArray(array) {
@@ -255,7 +257,8 @@
             gameArea.classList.remove('hidden');
             progressArea.textContent = '';
 
-            // Show instructions when game starts
+            // Show title and instructions when game starts
+            if (gameTitleH1) gameTitleH1.classList.remove('hidden');
             if (instructionsP) instructionsP.classList.remove('hidden');
 
             nextComparison();
@@ -266,7 +269,8 @@
             const viableCountries = activeCountries.filter(c => c.losses < 2);
 
             if (viableCountries.length < 2) {
-                // Hide instructions when showing final results too
+                // Hide title and instructions when showing final results
+                if (gameTitleH1) gameTitleH1.classList.add('hidden');
                 if (instructionsP) instructionsP.classList.add('hidden');
                 showResults(viableCountries, viableCountries.length === 1 && viableCountries[0].losses < 2 ? `${viableCountries[0].fictionalName} is the Winner!` : "Tournament Ended");
                 return;
@@ -284,7 +288,8 @@
             }
 
             if (possiblePairs.length === 0) {
-                 // Hide instructions when showing final results too
+                 // Hide title and instructions when showing final results
+                if (gameTitleH1) gameTitleH1.classList.add('hidden');
                 if (instructionsP) instructionsP.classList.add('hidden');
                 showResults(viableCountries, "No more valid matchups.");
                 return;
@@ -304,7 +309,8 @@
         }
 
         function handleChoiceTournament(event, countryA, countryB) {
-            // Hide instructions after the first choice is made
+            // Hide title and instructions after the first choice is made
+            if (gameTitleH1) gameTitleH1.classList.add('hidden');
             if (instructionsP) instructionsP.classList.add('hidden');
 
             const chosenRealName = event.target.dataset.countryRealname;
