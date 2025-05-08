@@ -3,84 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rawls' Original Position Game - Pairwise Choice</title>
+    <title>Rawls' Original Position - Tournament</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light blue-gray background */
-        }
-        .country-card {
-            background-color: white;
-            border-radius: 0.75rem; /* Rounded corners */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            width: 100%; /* Full width on small screens */
-        }
-        .country-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .stat-bar-container {
-            display: flex; /* Enables flex properties for aligning bars */
-            align-items: flex-end; /* Aligns bars to the bottom of the container */
-            height: 22px; /* Consistent height for the container */
-            gap: 3px; /* Space between individual bar segments */
-        }
-        .stat-bar {
-            width: 8px; /* Width of each bar segment */
-            border-radius: 2px; /* Slightly rounded bars */
-        }
-        .action-button {
-            background-color: #3B82F6;
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border: none;
-            outline: none;
-        }
-        .action-button:hover {
-            background-color: #2563EB;
-        }
-        #resultsArea ol li {
-            background-color: #fff;
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
-            margin-bottom: 0.5rem;
-        }
-        #resultsArea ol li .rank-badge {
-            display: inline-block;
-            width: 2rem;
-            height: 2rem;
-            line-height: 2rem;
-            text-align: center;
-            border-radius: 50%;
-            background-color: #3B82F6;
-            color: white;
-            font-weight: bold;
-            margin-right: 0.75rem;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
+        .country-card { background-color: white; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; width: 100%; }
+        .country-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+        .stat-bar-container { display: flex; align-items: flex-end; height: 22px; gap: 3px; }
+        .stat-bar { width: 8px; border-radius: 2px; }
+        .action-button { background-color: #3B82F6; color: white; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.2s; border: none; outline: none; }
+        .action-button:hover { background-color: #2563EB; }
+        #resultsArea ol li { background-color: #fff; padding: 0.75rem 1rem; border-radius: 0.375rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06); margin-bottom: 0.5rem; }
+        #resultsArea ol li .rank-badge { display: inline-block; width: 2rem; height: 2rem; line-height: 2rem; text-align: center; border-radius: 50%; background-color: #3B82F6; color: white; font-weight: bold; margin-right: 0.75rem; }
     </style>
 </head>
 <body class="text-gray-800 antialiased">
-
     <div class="container mx-auto px-4 py-8">
         <header class="text-center mb-6">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-700 mb-3">The Original Position</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-700 mb-3">The Original Position Tournament</h1>
             <p id="gameInstructions" class="text-md md:text-lg text-gray-600 max-w-3xl mx-auto">
-                You are a human embryo in space, about to land on Earth. Behind the 'Veil of Ignorance,' you don't know your future circumstances.
-                You will be presented with <strong class="font-semibold">pairs of fictional countries</strong>. For each pair, choose the country you would prefer to be born into based <strong class="font-semibold">only</strong> on these societal statistics. Your choices will help rank your preferences.
+                Witness the tournament! Countries face off based on their societal statistics. A country is eliminated after two losses. Who will emerge victorious?
             </p>
         </header>
 
         <div id="gameArea">
-            <div id="progressArea" class="text-center my-4 text-lg font-medium text-gray-600">
-                </div>
+            <div id="progressArea" class="text-center my-4 text-lg font-medium text-gray-600"></div>
             <div id="comparisonArea" class="flex flex-col md:flex-row justify-around items-stretch gap-6 md:gap-8 mb-8">
                 <div id="countryCardA" class="country-card p-6 flex flex-col justify-between"></div>
                 <div id="countryCardB" class="country-card p-6 flex flex-col justify-between"></div>
@@ -88,24 +36,17 @@
         </div>
 
         <div id="resultsArea" class="hidden mt-10">
-            <h2 class="text-3xl font-bold mb-6 text-center text-gray-700">Your Country Preferences</h2>
-            <ol id="rankedList" class="max-w-lg mx-auto space-y-2">
-                </ol>
+            <h2 class="text-3xl font-bold mb-6 text-center text-gray-700">Tournament Results</h2>
+            <ol id="rankedList" class="max-w-lg mx-auto space-y-2"></ol>
             <button id="playAgainBtn" class="action-button block mx-auto mt-8">Play Again</button>
         </div>
-
-        <footer class="mt-12 pt-8 border-t border-gray-300 text-sm text-gray-500">
-            <p class="mb-1"><strong>Data Sources:</strong></p>
-            <ul class="list-disc list-inside">
-                <li>Life Expectancy, Homicide Rate, Infant Mortality Rate: <a href="https://www.who.int/data/gho" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">World Health Organization (WHO) GHO data</a>.</li>
-                <li>Median Disposable Income, Poverty Rate, Foreign-Born Population: OECD data.</li>
-            </ul>
+         <footer class="mt-12 pt-8 border-t border-gray-300 text-sm text-gray-500">
+            <p class="mb-1"><strong>Data Sources:</strong> (Same as before)</p>
         </footer>
     </div>
 
     <script>
         // --- DATA ---
-        // Base profiles for countries; fictional names will be assigned dynamically.
         const baseCountryProfiles = [
             { realName: "Australia",       stats: { lifeExpectancy: 83.2, povertyRate: 12.3, homicideRate: 0.9, infantMortality: 3.3,  foreignBorn: 29.3, medianIncome: 36835 }},
             { realName: "Canada",          stats: { lifeExpectancy: 81.3, povertyRate: 11.2, homicideRate: 2.1, infantMortality: 4.4,  foreignBorn: 23.0, medianIncome: 39388 }},
@@ -118,21 +59,14 @@
             { realName: "United Kingdom",  stats: { lifeExpectancy: 80.8, povertyRate: 11.7, homicideRate: 1.1, infantMortality: 4.0,  foreignBorn: 16.8, medianIncome: 26884 }},
             { realName: "United States",   stats: { lifeExpectancy: 76.9, povertyRate: 18.0, homicideRate: 5.8, infantMortality: 5.4,  foreignBorn: 14.0, medianIncome: 48625 }}
         ];
-
         const fictionalNamePool = [
-            "Aethelgard", "Borelia", "Caspia", "Drakon", "Elara", "Faelan", "Gwyn", "Hyperia",
-            "Iridia", "Jorin", "Kaelara", "Lyndor", "Myrida", "Nyssen", "Orionus", "Pyral",
-            "Quintara", "Rheastel", "Solaris", "Tenebron", "Umbriel", "Valerium", "Wystia", "Xylos Prime",
-            "Ysoril", "Zephyria", "Argonia", "Brynnheim", "Corvallis", "Dalencia" // Pool of 30 names
-        ];
+            "Aethelgard", "Borelia", "Caspia", "Drakon", "Elara", "Faelan", "Gwyn", "Hyperia", "Iridia", "Jorin", 
+            "Kaelara", "Lyndor", "Myrida", "Nyssen", "Orionus", "Pyral", "Quintara", "Rheastel", "Solaris", "Tenebron"
+        ]; // Ensure enough unique names if you have more base profiles
 
         // --- GAME STATE ---
-        let currentGameCountries = []; // Holds country objects with dynamic fictional names for the current game
-        let countryScores = {};
-        let currentComparisonCount = 0; // Index for the comparisonSchedule
-        const TOTAL_COMPARISONS = 12;   // Ideal number of rounds
-        let currentPairIndices = [];
-        let comparisonSchedule = [];    // Stores the shuffled list of all possible unique pairs
+        let activeCountries = []; // Holds country objects for the current tournament
+        let currentRound = 0;
 
         // --- DOM ELEMENTS ---
         const gameArea = document.getElementById('gameArea');
@@ -151,37 +85,32 @@
             }
         }
 
-        function getBarRating(value, statKey, isPositiveGood) {
-            const allValues = currentGameCountries // Use currentGameCountries
+        function getTimesFaced(country1, country2) {
+            if (!country1.opponentsFaced || !country2.opponentsFaced) return 0;
+            return country1.opponentsFaced[country2.realName] || 0;
+        }
+
+        function areBothAmongLowestLosses(country1, country2, allViableCountries) {
+            if (allViableCountries.length === 0) return false;
+            let minLosses = Infinity;
+            allViableCountries.forEach(c => {
+                if (c.losses < minLosses) minLosses = c.losses;
+            });
+            return country1.losses === minLosses && country2.losses === minLosses;
+        }
+        
+        function getBarRating(value, statKey, isPositiveGood, currentCountryPool) {
+            const allValues = currentCountryPool
                 .map(c => c.stats[statKey])
                 .filter(v => typeof v === 'number' && !isNaN(v));
-            if (allValues.length === 0) {
-                return { barCount: 3, colorClass: 'bg-yellow-400' };
-            }
+            if (allValues.length === 0) return { barCount: 3, colorClass: 'bg-yellow-400' };
             const minVal = Math.min(...allValues);
             const maxVal = Math.max(...allValues);
-            let barCount;
-            let colorClass;
-            if (minVal === maxVal) {
-                barCount = 3;
-                colorClass = 'bg-yellow-400';
-            } else {
-                let normalizedValue;
-                if (isPositiveGood) {
-                    normalizedValue = (value - minVal) / (maxVal - minVal);
-                } else {
-                    normalizedValue = (maxVal - value) / (maxVal - minVal);
-                }
-                barCount = Math.round(1 + normalizedValue * 5);
-                barCount = Math.max(1, Math.min(6, barCount));
-                if (barCount >= 5) {
-                    colorClass = 'bg-green-500';
-                } else if (barCount >= 3) {
-                    colorClass = 'bg-yellow-400';
-                } else {
-                    colorClass = 'bg-red-500';
-                }
-            }
+            if (minVal === maxVal) return { barCount: 3, colorClass: 'bg-yellow-400' };
+            
+            let normalizedValue = isPositiveGood ? (value - minVal) / (maxVal - minVal) : (maxVal - value) / (maxVal - minVal);
+            let barCount = Math.max(1, Math.min(6, Math.round(1 + normalizedValue * 5)));
+            let colorClass = barCount >= 5 ? 'bg-green-500' : barCount >= 3 ? 'bg-yellow-400' : 'bg-red-500';
             return { barCount, colorClass };
         }
 
@@ -190,31 +119,21 @@
             for (let i = 0; i < barCount; i++) {
                 barsHTML += `<div class="stat-bar ${colorClass}" style="height: 18px;"></div>`;
             }
-            barsHTML += '</div>';
-            return barsHTML;
+            return barsHTML + '</div>';
         }
 
-        function generateComparisonSchedule(numCountries) {
-            const schedule = [];
-            for (let i = 0; i < numCountries; i++) {
-                for (let j = i + 1; j < numCountries; j++) {
-                    schedule.push([i, j]);
-                }
-            }
-            shuffleArray(schedule); // Shuffle the pairs
-            return schedule;
-        }
-
-        // --- COUNTRY CARD RENDERING ---
-        function createCountryCardHTML(country, countryIndex) { // country object now comes from currentGameCountries
-            const leRating = getBarRating(country.stats.lifeExpectancy, 'lifeExpectancy', true);
-            const incomeRating = getBarRating(country.stats.medianIncome, 'medianIncome', true);
-            const povertyRating = getBarRating(country.stats.povertyRate, 'povertyRate', false);
-            const homicideRating = getBarRating(country.stats.homicideRate, 'homicideRate', false);
-            const imRating = getBarRating(country.stats.infantMortality, 'infantMortality', false);
+        // --- COUNTRY CARD RENDERING (Tournament Version) ---
+        function createCountryCardHTML_Tournament(country, currentViablePool) {
+            const leRating = getBarRating(country.stats.lifeExpectancy, 'lifeExpectancy', true, currentViablePool);
+            const incomeRating = getBarRating(country.stats.medianIncome, 'medianIncome', true, currentViablePool);
+            const povertyRating = getBarRating(country.stats.povertyRate, 'povertyRate', false, currentViablePool);
+            const homicideRating = getBarRating(country.stats.homicideRate, 'homicideRate', false, currentViablePool);
+            const imRating = getBarRating(country.stats.infantMortality, 'infantMortality', false, currentViablePool);
 
             return `
-                <div> <h2 class="text-2xl font-bold uppercase text-blue-600 mb-4 text-center">${country.fictionalName}</h2>
+                <div> 
+                    <h2 class="text-2xl font-bold uppercase text-blue-600 mb-2 text-center">${country.fictionalName}</h2>
+                    <p class="text-center text-sm text-gray-500 mb-3">Losses: ${country.losses}</p>
                     <div class="space-y-3 text-sm text-gray-700">
                         <div class="flex justify-between items-center"><span>Life Expectancy: ${country.stats.lifeExpectancy.toFixed(1)} yrs</span>${generateBarsHTML(leRating.barCount, leRating.colorClass)}</div>
                         <div class="flex justify-between items-center"><span>Median Income: $${country.stats.medianIncome.toLocaleString()}</span>${generateBarsHTML(incomeRating.barCount, incomeRating.colorClass)}</div>
@@ -224,7 +143,7 @@
                         <div class="flex justify-between items-center"><span>Foreign-Born: ${country.stats.foreignBorn.toFixed(1)}%</span><div class="stat-bar-container w-[75px] justify-start"></div></div>
                     </div>
                 </div>
-                <button class="action-button w-full mt-6 select-country-btn" data-country-index="${countryIndex}">
+                <button class="action-button w-full mt-6 select-country-btn" data-country-realname="${country.realName}">
                     Choose ${country.fictionalName}
                 </button>
             `;
@@ -232,23 +151,14 @@
 
         // --- GAME LOGIC ---
         function startGame() {
-            shuffleArray(fictionalNamePool); // Shuffle names for each new game
-
-            currentGameCountries = baseCountryProfiles.map((profile, index) => {
-                return {
-                    ...profile, // Includes realName and stats
-                    fictionalName: (index < fictionalNamePool.length) ? fictionalNamePool[index] : `Domain ${index + 1}` // Assign dynamic fictional name
-                };
-            });
-
-            countryScores = {};
-            currentGameCountries.forEach(country => {
-                countryScores[country.realName] = 0; // Scores keyed by realName
-            });
-
-            comparisonSchedule = generateComparisonSchedule(currentGameCountries.length);
-            currentComparisonCount = 0;
-
+            shuffleArray(fictionalNamePool);
+            activeCountries = baseCountryProfiles.map((profile, index) => ({
+                ...profile,
+                fictionalName: fictionalNamePool[index % fictionalNamePool.length], // Cycle through names if not enough
+                losses: 0,
+                opponentsFaced: {} // { opponentRealName: count }
+            }));
+            currentRound = 0;
             resultsArea.classList.add('hidden');
             gameArea.classList.remove('hidden');
             progressArea.textContent = '';
@@ -256,70 +166,110 @@
         }
 
         function nextComparison() {
-            if (currentGameCountries.length < 2) { // Use currentGameCountries
-                progressArea.textContent = "Not enough countries to continue comparisons.";
-                showResults();
+            currentRound++;
+            const viableCountries = activeCountries.filter(c => c.losses < 2);
+
+            if (viableCountries.length < 2) {
+                showResults(viableCountries);
+                return;
+            }
+            progressArea.textContent = `Round ${currentRound}`;
+
+            let possiblePairs = [];
+            for (let i = 0; i < viableCountries.length; i++) {
+                for (let j = i + 1; j < viableCountries.length; j++) {
+                    const c1 = viableCountries[i];
+                    const c2 = viableCountries[j];
+                    const timesFaced = getTimesFaced(c1, c2);
+                    let canPlay = false;
+
+                    if (timesFaced < 2) {
+                        canPlay = true;
+                    } else if (timesFaced === 2) { // Max 2 times faced, check special condition for 3rd+
+                        if (areBothAmongLowestLosses(c1, c2, viableCountries)) {
+                            canPlay = true; // Allow 3rd match only under this condition
+                        }
+                    }
+                    if (canPlay) possiblePairs.push({ countryA: c1, countryB: c2 });
+                }
+            }
+
+            if (possiblePairs.length === 0) {
+                progressArea.textContent = "No more valid matchups possible.";
+                showResults(viableCountries); // Show current standings
                 return;
             }
 
-            if (currentComparisonCount >= TOTAL_COMPARISONS || currentComparisonCount >= comparisonSchedule.length) {
-                showResults();
-                return;
-            }
-            
-            progressArea.textContent = `Comparison ${currentComparisonCount + 1} of ${TOTAL_COMPARISONS}`;
-            
-            const pair = comparisonSchedule[currentComparisonCount];
-            const index1 = pair[0];
-            const index2 = pair[1];
-            
-            currentPairIndices = [index1, index2]; 
-            
-            const countryA = currentGameCountries[index1]; // Use currentGameCountries
-            const countryB = currentGameCountries[index2]; // Use currentGameCountries
+            const selectedPair = possiblePairs[Math.floor(Math.random() * possiblePairs.length)];
+            const { countryA, countryB } = selectedPair;
 
-            countryCardA_div.innerHTML = createCountryCardHTML(countryA, index1);
-            countryCardB_div.innerHTML = createCountryCardHTML(countryB, index2);
-            
+            countryCardA_div.innerHTML = createCountryCardHTML_Tournament(countryA, viableCountries);
+            countryCardB_div.innerHTML = createCountryCardHTML_Tournament(countryB, viableCountries);
+
             document.querySelectorAll('.select-country-btn').forEach(button => {
-                button.replaceWith(button.cloneNode(true)); 
-            });
-            document.querySelectorAll('.select-country-btn').forEach(button => {
-                 button.addEventListener('click', handleChoice);
+                const newButton = button.cloneNode(true);
+                button.parentNode.replaceChild(newButton, button); // Replace to remove old listeners
+                newButton.addEventListener('click', (event) => handleChoiceTournament(event, countryA, countryB));
             });
         }
         
-        function handleChoice(event) {
-            const chosenCountryIndex = parseInt(event.target.dataset.countryIndex);
-            const chosenCountryRealName = currentGameCountries[chosenCountryIndex].realName; // Use currentGameCountries
-            countryScores[chosenCountryRealName]++;
+        function handleChoiceTournament(event, countryA, countryB) {
+            const chosenRealName = event.target.dataset.countryRealname;
+            let winner, loser;
+
+            if (countryA.realName === chosenRealName) {
+                winner = countryA; loser = countryB;
+            } else {
+                winner = countryB; loser = countryA;
+            }
+
+            // Find original objects in activeCountries to update
+            const loserInActive = activeCountries.find(c => c.realName === loser.realName);
+            const winnerInActive = activeCountries.find(c => c.realName === winner.realName);
+
+            if (loserInActive) loserInActive.losses++;
             
-            currentComparisonCount++;
+            if (winnerInActive && loserInActive) {
+                winnerInActive.opponentsFaced[loserInActive.realName] = (winnerInActive.opponentsFaced[loserInActive.realName] || 0) + 1;
+                loserInActive.opponentsFaced[winnerInActive.realName] = (loserInActive.opponentsFaced[winnerInActive.realName] || 0) + 1;
+            }
             nextComparison();
         }
 
-        function showResults() {
+        function showResults(finalists) {
             gameArea.classList.add('hidden');
             resultsArea.classList.remove('hidden');
-            if (currentComparisonCount >= TOTAL_COMPARISONS || (currentGameCountries.length >=2 && currentComparisonCount >= comparisonSchedule.length) ) {
-                 progressArea.textContent = "Comparisons Complete!";
-            } else if (currentGameCountries.length < 2) { // Use currentGameCountries
-                 progressArea.textContent = "Not enough countries for further comparison. Showing current results.";
-            }
+            rankedList_ol.innerHTML = '';
 
-            const sortedCountries = Object.entries(countryScores)
-                .map(([realName, score]) => ({ realName, score }))
-                .sort((a, b) => b.score - a.score); 
-            rankedList_ol.innerHTML = ''; 
-            sortedCountries.forEach((country, index) => {
-                const listItem = document.createElement('li');
-                listItem.className = "flex items-center";
-                listItem.innerHTML = `
-                    <span class="rank-badge">${index + 1}</span>
-                    <span><strong>${country.realName}</strong> - Chosen: ${country.score} time(s)</span>
-                `; // Real name is now bold
-                rankedList_ol.appendChild(listItem);
-            });
+            if (finalists.length === 1 && finalists[0].losses < 2) {
+                progressArea.textContent = `Tournament Winner: ${finalists[0].fictionalName}!`;
+                const li = document.createElement('li');
+                li.className = "flex items-center";
+                li.innerHTML = `<span class="rank-badge">🏆</span><span><strong>${finalists[0].realName}</strong> (${finalists[0].fictionalName}) - Losses: ${finalists[0].losses}</span>`;
+                rankedList_ol.appendChild(li);
+            } else if (finalists.length === 0 || finalists.every(c => c.losses >=2)) {
+                 progressArea.textContent = "Tournament ended with no clear winner (all eliminated or no matchups).";
+                 const li = document.createElement('li');
+                 li.textContent = "No countries remaining with fewer than 2 losses.";
+                 rankedList_ol.appendChild(li);
+            }
+            else {
+                progressArea.textContent = "Tournament Concluded. Remaining Countries:";
+                finalists.sort((a, b) => a.losses - b.losses || a.fictionalName.localeCompare(b.fictionalName));
+                finalists.forEach((country, index) => {
+                    if (country.losses < 2) { // Only display those not yet fully eliminated
+                        const li = document.createElement('li');
+                        li.className = "flex items-center";
+                        li.innerHTML = `<span class="rank-badge">${index + 1}</span><span><strong>${country.realName}</strong> (${country.fictionalName}) - Losses: ${country.losses}</span>`;
+                        rankedList_ol.appendChild(li);
+                    }
+                });
+                 if(rankedList_ol.children.length === 0){ // If all sorted finalists actually had 2 losses
+                    const li = document.createElement('li');
+                    li.textContent = "All remaining countries have 2 losses.";
+                    rankedList_ol.appendChild(li);
+                 }
+            }
         }
 
         // --- EVENT LISTENERS ---
