@@ -170,15 +170,35 @@
             return country1.losses === minLosses && country2.losses === minLosses;
         }
 
-        function getBarRating(value, statKey, isPositiveGood, currentCountryPool) {
-            const allValues = currentCountryPool.map(c => c.stats[statKey]).filter(v => typeof v === 'number' && !isNaN(v));
+        function getBarRating(value, statKey, isPositiveGood) { // currentCountryPool removed
+            const allValues = baseCountryProfiles // Use baseCountryProfiles for global scale
+                .map(c => c.stats[statKey])
+                .filter(v => typeof v === 'number' && !isNaN(v));
+
             if (allValues.length === 0) return { barCount: 3, colorClass: 'bg-yellow-400' };
+            
             const minVal = Math.min(...allValues);
             const maxVal = Math.max(...allValues);
+
             if (minVal === maxVal) return { barCount: 3, colorClass: 'bg-yellow-400' };
-            let normalizedValue = isPositiveGood ? (value - minVal) / (maxVal - minVal) : (maxVal - value) / (maxVal - minVal);
-            let barCount = Math.max(1, Math.min(6, Math.round(1 + normalizedValue * 5)));
-            let colorClass = barCount >= 5 ? 'bg-green-500' : barCount >= 3 ? 'bg-yellow-400' : 'bg-red-500';
+            
+            let normalizedValue;
+            if (isPositiveGood) {
+                normalizedValue = (value - minVal) / (maxVal - minVal);
+            } else { 
+                normalizedValue = (maxVal - value) / (maxVal - minVal);
+            }
+            
+            normalizedValue = Math.max(0, Math.min(1, normalizedValue));
+
+            let barCount = Math.round(1 + normalizedValue * 5); 
+            barCount = Math.max(1, Math.min(6, barCount)); 
+
+            let colorClass;
+            if (barCount >= 5) colorClass = 'bg-green-500';      
+            else if (barCount >= 3) colorClass = 'bg-yellow-400'; 
+            else colorClass = 'bg-red-500';                     
+            
             return { barCount, colorClass };
         }
 
@@ -202,12 +222,12 @@
         }
 
         // --- COUNTRY CARD RENDERING ---
-        function createCountryCardHTML_Tournament(country, currentViablePool) {
-            const leRating = getBarRating(country.stats.lifeExpectancy, 'lifeExpectancy', true, currentViablePool);
-            const incomeRating = getBarRating(country.stats.medianIncome, 'medianIncome', true, currentViablePool);
-            const povertyRating = getBarRating(country.stats.povertyRate, 'povertyRate', false, currentViablePool);
-            const homicideRating = getBarRating(country.stats.homicideRate, 'homicideRate', false, currentViablePool);
-            const imRating = getBarRating(country.stats.infantMortality, 'infantMortality', false, currentViablePool);
+        function createCountryCardHTML_Tournament(country) { // _currentViablePool_ignored removed
+            const leRating = getBarRating(country.stats.lifeExpectancy, 'lifeExpectancy', true);
+            const incomeRating = getBarRating(country.stats.medianIncome, 'medianIncome', true);
+            const povertyRating = getBarRating(country.stats.povertyRate, 'povertyRate', false);
+            const homicideRating = getBarRating(country.stats.homicideRate, 'homicideRate', false);
+            const imRating = getBarRating(country.stats.infantMortality, 'infantMortality', false);
 
             const lossesText = country.losses > 0
                 ? `<p class="text-xs text-gray-500 text-center mb-0.5">Losses: ${country.losses}</p>`
@@ -256,7 +276,6 @@
             gameArea.classList.remove('hidden');
             progressArea.textContent = '';
 
-            // Show title and instructions when game starts
             if (gameTitleH1) gameTitleH1.classList.remove('hidden');
             if (instructionsP) instructionsP.classList.remove('hidden');
 
@@ -268,7 +287,6 @@
             const viableCountries = activeCountries.filter(c => c.losses < 2);
 
             if (viableCountries.length < 2) {
-                // Hide title and instructions when showing final results
                 if (gameTitleH1) gameTitleH1.classList.add('hidden');
                 if (instructionsP) instructionsP.classList.add('hidden');
                 showResults(viableCountries, viableCountries.length === 1 && viableCountries[0].losses < 2 ? `${viableCountries[0].fictionalName} is the Winner!` : "Tournament Ended");
@@ -287,7 +305,6 @@
             }
 
             if (possiblePairs.length === 0) {
-                 // Hide title and instructions when showing final results
                 if (gameTitleH1) gameTitleH1.classList.add('hidden');
                 if (instructionsP) instructionsP.classList.add('hidden');
                 showResults(viableCountries, "No more valid matchups.");
@@ -297,8 +314,8 @@
             const selectedPair = possiblePairs[Math.floor(Math.random() * possiblePairs.length)];
             const { countryA, countryB } = selectedPair;
 
-            countryCardA_div.innerHTML = createCountryCardHTML_Tournament(countryA, viableCountries);
-            countryCardB_div.innerHTML = createCountryCardHTML_Tournament(countryB, viableCountries);
+            countryCardA_div.innerHTML = createCountryCardHTML_Tournament(countryA); // No longer pass viableCountries
+            countryCardB_div.innerHTML = createCountryCardHTML_Tournament(countryB); // No longer pass viableCountries
 
             document.querySelectorAll('.select-country-btn').forEach(button => {
                 const newButton = button.cloneNode(true);
@@ -308,7 +325,6 @@
         }
 
         function handleChoiceTournament(event, countryA, countryB) {
-            // Hide title and instructions after the first choice is made
             if (gameTitleH1) gameTitleH1.classList.add('hidden');
             if (instructionsP) instructionsP.classList.add('hidden');
 
